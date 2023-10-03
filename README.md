@@ -1,5 +1,5 @@
-# Getting-Started-with-Android-Custom-ROM-Adaptation_Prebuilt-Vendor
-Getting Started with Android Custom ROM Adaptation - Prebuilt Vendor
+# Android カスタム ROM アダプテーションの開始 - ベンダーのプレビルド
+Android カスタム ROM アダプテーションの開始 - Vendor の事前ビルド
 
 - [快速上手 Android Custom ROM 适配 - Prebuilt Vendor](https://blog.lynnrin.moe/posts/ROM-bringup-guide-prebuilt/#%E5%AE%8C%E5%96%84-device-tree-%E5%87%86%E5%A4%87%E5%BC%80%E5%A7%8B%E7%BC%96%E8%AF%91-android)
 
@@ -64,29 +64,34 @@ Getting Started with Android Custom ROM Adaptation - Prebuilt Vendor
             * logcat 日志中出现 fatal signal 11 (SIGSEGV), code 1 (SEGV_MAPERR) 错误
 ---
 
-# Android Custom ROMの構築適応を始める - Prebuilt Vendor	
+# Android カスタム ROM ビルドの適用を始める - ベンダーのプレビルド
 
     ⚠️ 注：私はプロのAndroid開発者ではありません、この記事は参考用です。もし間違いがあれば、遠慮なく訂正してください！
     ⚠️ 注：私はプロのAndroid開発者ではありません、この記事は参考用です。もし間違いがあれば、遠慮なく訂正してください！
     ⚠️ 注：私はプロのAndroid開発者ではありません、この記事は参考用です。もし間違いがあれば、遠慮なく訂正してください！
 
-この投稿は、GKI、VNDKバージョン30と互換性のないVABデバイスであるXiaomi 10Sの適応についてです。
+この投稿はGKI、VNDKバージョン30と互換性のないVABデバイスであるXiaomi 10Sの適用についてです。
+
 コンパイルサーバーシステム: Ubuntu 22.04
 
-# Prebuilt Vendorとは何か、何故Prebuilt Vendorなのか？
+# プレビルドベンダーとは何か、何故ベンダーのプレビルドなのか?
 
-Prebuilt Vendorとは、その名の通り、Vendorのコンパイル済みVendorを使用してカスタム適応を行うことである。 これにより、適応の難易度とデバッグ時間が大幅に削減されます。
+プレビルドベンダーとは、その名の通りでベンダーにコンパイル済みのベンダーを使用してカスタムの適用を行う事です。 
 
-GoogleはAndroid 8.0でPT (Project Treble)を導入し、AndroidカスタムROMの適応とデバッグの難易度を大幅に下げた。 さらに今年、Googleは再びGRF (Google Requirements Freeze)、別名Vendor Freezeを導入し、適応の難易度を再び下げた。
+これにより、適用の難易度とデバッグの時間が大幅に削減されます。
 
-Android 8.0以前では、カスタムROMを適応するために、チップやハードウェアメーカーのAOSP、CAFや他のオープンソースコードを通して、デバイスハードウェアが必要とするランタイムライブラリ、HALやドライバをコンパイルする必要があり、Androidがメジャーバージョンにアップグレードされるたびに再コンパイルする必要があり、新しいバージョンのAndoridの動作やコンパイルに問題がある可能性が非常に高く、ソースコードの更新を待って修正するか、自分で手動で修正する必要があります。 新しいバージョンのAndoridの動作やコンパイルに問題がある可能性が非常に高く、ソースコードの更新を待って修正するか、手動で修正する必要があります。
+GoogleはAndroid 8.0でProject Trebleを公開し、AndroidカスタムROMの適用とデバッグの難易度を大幅に下げました。
 
-PT、GRFの導入後、Vendorを純正ROMで直接使用することができ、KernelとSystemをコンパイルする必要があるだけでなく、GRFの導入により、Vendorは少なくとも3つの主要バージョンのAndroidアップデートと互換性があります。 (例えば、Xiaomi 12はAndroid 12、VNDKバージョン32を搭載し、このバージョンのVendorイメージは少なくともAndroid 15、VNDK 35と互換性があります。)
+今年にはGoogleはGoogle Requirements Freeze、またの名を「Vendor Freeze」を導入し、適用の難易度を更に下げました。
+
+Android 8.0以前では、カスタムROMを適用するために、チップやハードウェアメーカーのAOSP、CAFや他のオープンソースコードを通して、デバイスハードウェアが必要とするランタイムライブラリ、HALやドライバをコンパイルする必要があり、Androidがメジャーバージョンにアップグレードされるたびに再びコンパイルする必要がありました。新しいバージョンのAndoridは、動作やコンパイルに問題が起きる可能性が非常に高く、ソースコードの更新がされるまで待つか、自分でソースを修正する必要があります。 
+
+Project TrebleとGoogle Requirements Freezeの導入するとベンダーを純正ROMで直接使用することができるようになり、カーネルとシステムをコンパイルする必要があるだけでなく、Google Requirements Freezeの導入により、ベンダーは少なくとも3つの主要バージョンのAndroidアップデートと互換性があります。 (例:Xiaomi 12はAndroid 12、VNDKバージョン32でこのバージョンのベンダーイメージは少なくともAndroid 15、VNDK 35と互換性がある)
 
 # 準備するもの
 
 1. AndroidをコンパイルできるPCまたはサーバー
-2. MIUI公式Firmware
+2. MIUI公式ファームウェア
 3. インターネット接続
 4. Xiaomi 10S
 
@@ -123,11 +128,13 @@ repo init -u https://github.com/LineageOS/android.git -b lineage-19.1 --depth=1 
 repo sync	
 ```
 
-# 適応開始
+# 適用開始
 
 MIUIを抽出する
 
-IMSのようないくつかの機能を動作させるためには、ストックシステムにあるいくつかのファイルが必要なので、まずストックシステムを解凍する必要がある。
+IMSのようないくつかの機能を動作させるためには、ストックシステムにあるいくつかのファイルが必要です。
+
+この操作では、ストックシステムを展開する必要があります。
 下载解包工具	
 ```
 git clone https://github.com/ShivamKumarJha/android_tools --depth=1	
@@ -145,11 +152,11 @@ sudo bash setup.sh
 ./tools/rom_extract.sh MIUI_PACKAGE.zip
 ```
 
-# 必要ファイルの抽出
+# 必要なファイルの抽出
 
 # vendorとodmの抽出
 
-prebuilt vendorなので、オリジナル・システムからvendor、odmイメージを抽出する必要がある。
+prebuilt vendorなので、元となるシステムからvendor、odmイメージを抽出する必要があります。
 ```
 unzip MIUI_PACKAGE.zip	
 ./../android_tools/tools/Firmware_extractor/tools/update_payload_extractor/extract.py payload.bin --output_dir images/
@@ -175,15 +182,17 @@ chmod a+x magiskboot_x86
 
 次に、展開したkernel、dtb、dtbo.imgをdevice/xiaomi/thyme-prebuilt/にコピーする。
 
-# device tree構築を始める
+# デバイスツリーの構築を始める
 
-# device treeを初期化し、recoveryをコンパイルする
+# デバイスツリーを初期化し、リカバリーをコンパイルする
 
-device treeを初期化し、recoveryをコンパイルしてkernelの可用性を検証する必要がある。
+デバイスツリーを初期化し、リカバリーをコンパイルしてカーネルの可用性を検証する必要があります。
 
 # Android.mk
 
-これは、Android makeコンパイラー・システムにおけるコンパイル設定ファイルです。Androidコンパイラー・システムは、デバイス・フォルダー内のAndroid.mkを含め、ソース・ディレクトリー内のすべてのAndroid.mkファイルをインクルードします。 カレント・フォルダー内のすべてのmakefileファイルをこのファイルにインクルードする必要があります。Androidコンパイラーは、デバイス・フォルダー内の他のmakefileをインクルードしません。
+Android makeコンパイラシステムにおけるコンパイル設定ファイルです。
+
+Androidコンパイラシステムは、デバイスフォルダ内のAndroid.mkを含め、ソースディレクトリ内のすべてのAndroid.mkファイルを含みます。 カレントフォルダ内のすべてのmakefileファイルをこのファイルに含ませる必要があります。Androidコンパイラは、デバイスのフォルダ内の他のmakefileは含みません。
 ```
 LOCAL_PATH := $(call my-dir) # 设置一个 LOCAL_PATH 变量, 并将当前文件夹的路径赋值给它	
 ifeq ($(TARGET_DEVICE),thyme) # 如果 TARGET_DEVICE 变量等于 thyme	
@@ -194,7 +203,7 @@ endif # 结束 if 语句
 
 # Android.bp
 
-これは、soongコンパイルシステム導入後のAndroidのコンパイル設定ファイルです。Androidのコンパイルシステムは、ソースディレクトリにある全てのAndroid.bpファイルをインクルードし、デバイスフォルダにあるAndroid.bpもインクルードします。 現時点では、外部のsoongモジュールをコンパイルする必要はありません。
+soongコンパイルシステム導入後のAndroidのコンパイル設定ファイルです。Androidのコンパイルシステムは、ソースディレクトリにある全てのAndroid.bpファイルをインクルードし、デバイスフォルダにあるAndroid.bpもインクルードします。 現時点では、外部のsoongモジュールをコンパイルする必要はありません。
 ```
 soong_namespace { // soong 编译系统的命名空间	
     imports: [], // 导入的 soong 模块路径	
@@ -203,7 +212,7 @@ soong_namespace { // soong 编译系统的命名空间
 
 # AndroidProducts.mk
 
-ここではデバイスのコンパイル・コンフィギュレーションを定義し、複数のデバイスや同じデバイスのバリエーションをコンパイルするために、複数のデバイス・コンフィギュレーションを定義することができる。
+ここではデバイスのコンパイル構成を定義して、複数のデバイスや同じデバイスのバリエーションをコンパイルするために、複数のデバイス構成を定義することができます。
 PRODUCT_MAKEFILES := \	
     $(LOCAL_DIR)/lineage_thyme.mk # 要使用的设备编译配置文件	
 	
@@ -240,7 +249,7 @@ PRODUCT_GMS_CLIENTID_BASE := android-xiaomi # 产品 GMS 客户端 ID
 
 # BoardConfig.mk
 
-これはデバイスのボード・レベル・コンフィギュレーション・ファイルで、デバイスのハードウェア・コンフィギュレーションを定義する必要がある。
+デバイスのボードレベル構成ファイルで、デバイスのハードウェア構成を定義する必要があります。
 ```
 DEVICE_PATH := device/xiaomi/thyme # 定义一个 DEVICE_PATH 变量,     指向设备文件夹
 ```
@@ -259,7 +268,7 @@ AB_OTA_PARTITIONS += \ # A/B OTA 更新的分区
     vbmeta_system
 ```
 
-# Architecture
+# アーキテクチャ
 ```
 TARGET_ARCH := arm64 # 指定目标架构为 arm64
 TARGET_ARCH_VARIANT := armv8-a # 指定目标架构变体为 armv8-a
@@ -276,12 +285,12 @@ TARGET_2ND_CPU_VARIANT := generic # 指定第二目标 CPU 变体为 generic
 TARGET_2ND_CPU_VARIANT_RUNTIME := kryo385 # 指定第二目标 CPU 变体运行时为 kryo385
 ```
 
-# Bootloader
+# ブートローダー
 ```
 TARGET_BOOTLOADER_BOARD_NAME := kona # 指定目标 bootloader 名为 kona, 该值可以从 MIUI 的 vendor/build.prop 中获取
 ```
 
-# Kernel
+# カーネル
 ```
 BOARD_BOOT_HEADER_VERSION := 3 # 指定内核头版本为 3, 内核头版本从 3 开始支持 vendor_boot 分区
 BOARD_KERNEL_BASE := 0x00000000 # 指定内核基地址为 0x00000000
@@ -314,12 +323,12 @@ ifeq ($(TARGET_PREBUILT_KERNEL),) # 如果没有使用预编译内核
 endif
 ```
 
-# Metadata
+# メタデータ
 ```
 BOARD_USES_METADATA_PARTITION := true # 使用 metadata 元数据加密
 ```
 
-# Partitions
+# パーティション
 ```
 BOARD_BOOTIMAGE_PARTITION_SIZE := 201326592 # 指定 boot 分区大小为 201326592
 BOARD_DTBOIMG_PARTITION_SIZE := 33554432 # 指定 dtbo 分区大小为 33554432
@@ -339,13 +348,13 @@ $(foreach p, $(BOARD_PARTITION_LIST), $(eval TARGET_COPY_OUT_$(p) := $(call to-l
 BOARD_USERDATAIMAGE_FILE_SYSTEM_TYPE := f2fs # 指定 userdata 分区文件系统类型为 f2fs
 ```
 
-# Platform
+# プラットフォーム
 ```
 BOARD_USES_QCOM_HARDWARE := true # 指定使用 Qualcomm 硬件
 TARGET_BOARD_PLATFORM := kona # 指定平台为 kona
 ```
 
-# Recovery
+# リカバリー
 ```
 BOARD_INCLUDE_RECOVERY_DTBO := true # 指定包含 recovery DTBO
 BOARD_USES_RECOVERY_AS_BOOT := true # 指定 recovery 在 boot 分区中
@@ -401,7 +410,7 @@ AB_OTA_POSTINSTALL_CONFIG += \
     POSTINSTALL_OPTIONAL_system=true
 ```
 
-# Boot animation
+# ブートアニメーション
 ```
 TARGET_SCREEN_HEIGHT := 2400 # 指定屏幕高度为 2400
 TARGET_SCREEN_WIDTH := 1080 # 指定屏幕宽度为 1080
@@ -428,19 +437,19 @@ PRODUCT_PACKAGES += \
     check_f2fs
 ```
 
-# Partitions
+# パーティション
 ```
 PRODUCT_USE_DYNAMIC_PARTITIONS := true # 指定使用动态分区
 PRODUCT_BUILD_SUPER_PARTITION := false # 指定不编译 super 分区
 ```
 
-# Soong namespaces
+# Soong 名前空間
 ```
 PRODUCT_SOONG_NAMESPACES += \
     $(LOCAL_PATH) # 指定 soong 命名空间
 ```
 
-# Update engine
+# アップデートエンジン
 ```
 PRODUCT_PACKAGES += \
     otapreopt_script \ # 编译 otapreopt 脚本
@@ -483,14 +492,14 @@ https://github.com/Lynnrin-Studio/android_device_xiaomi_thyme/commit/cce87ffbd14
 
 # Recoveryのコンパイル開始
 
-それができたら、リカバリーのコンパイルを始めてテストしよう。
+それができたら、リカバリーのコンパイルを始めてテストしましょう。
 ```
 . build/envsetup.sh # 初始化编译环境	
 lunch lineage_thyme-userdebug # 初始化设备编译环境	
 m bootimage # 编译 boot image, 由于是 A/B 设备, 故此处编译 boot image 而不是 recovery image
 ```
 
-コンパイル完了後、デバイスをフラッシュする
+コンパイル完了後、デバイスにフラッシュをする
 ```
 fastboot flash boot out/target/product/thyme/boot.img # 刷入 boot image	
 fastboot reboot recovery # 重启到 recovery
@@ -498,9 +507,9 @@ fastboot reboot recovery # 重启到 recovery
 
 コンパイル後、デバイスがリカバリーに移行できれば次のステップに進むことができるが、そうでなければ記事の最後にあるデバッグ・ガイドを参照してデバッグを行ってほしい。
 
-# device treeを完成させ、Androidのコンパイルを開始する準備をする
+# デバイスツリーを完成させてAndroidのコンパイルを開始する準備をする
 
-このセクションは大部分なので、私のGitHubリポジトリのコミット履歴を参照してほしい。
+このセクションは大部分なので、私のGitHubリポジトリのコミット履歴を参照してください。
 
 proprietary-files.txt, extract-files.sh 和 setup-makefiles.sh
 
@@ -649,7 +658,7 @@ GoogleはAndroid 13でBluetoothを含むいくつかのコンポーネントを�
 デバイスによってはlibvolumelistenerがメーカーによって変更されている可能性があるので、このコミットでlibvolumelistenerを置き換える必要がある。
 - https://github.com/Lynnrin-Studio/android_device_xiaomi_nabu/commit/27e74adfbc30444380e471841957c56b74ffb79b
 
-# デバッグ・ガイド
+# デバッグガイド
 
 ## デバイスが純正ロゴで止まっている（1つの画面で止まっている）
 これにはさまざまな理由がある。
